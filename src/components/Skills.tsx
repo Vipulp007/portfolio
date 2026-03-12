@@ -54,16 +54,27 @@ const Skills = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: 0.1 * i }}
-              className="glass-card p-6 hover-lift group"
+              whileHover={{ 
+                y: -8, 
+                scale: 1.02,
+                transition: { duration: 0.25 } 
+              }}
+              className="glass-card p-6 group cursor-default relative overflow-hidden"
             >
-              <h3 className="font-mono text-primary text-sm font-semibold mb-4 uppercase tracking-wider">
+              {/* Hover glow effect */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,hsl(172,66%,50%,0.08),transparent_70%)]" />
+              
+              {/* Hover border glow */}
+              <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border border-primary/20" />
+
+              <h3 className="font-mono text-primary text-sm font-semibold mb-4 uppercase tracking-wider relative z-10">
                 {cat.title}
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 relative z-10">
                 {cat.skills.map((skill) => (
                   <span
                     key={skill}
-                    className="text-xs px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground font-medium"
+                    className="text-xs px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground font-medium transition-colors duration-200 group-hover:bg-primary/10 group-hover:text-primary"
                   >
                     {skill}
                   </span>

@@ -1,17 +1,21 @@
 import { motion } from "framer-motion";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import profileImg from "@/assets/profile.jpeg";
+import HaloBackground from "./HaloBackground";
 
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Gradient glow */}
+      {/* Halo canvas background */}
+      <HaloBackground />
+
+      {/* Gradient glow overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: "var(--gradient-hero)" }}
+        style={{ background: "var(--gradient-hero)", zIndex: 1 }}
       />
 
-      <div className="section-container flex flex-col-reverse md:flex-row items-center gap-12 md:gap-16 pt-20">
+      <div className="section-container flex flex-col-reverse md:flex-row items-center gap-12 md:gap-16 pt-20 relative z-10">
         {/* Text */}
         <div className="flex-1 text-center md:text-left">
           <motion.p
@@ -115,7 +119,7 @@ const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
         <a href="#about" className="text-muted-foreground hover:text-primary transition-colors">
           <ArrowDown size={20} className="animate-bounce" />
