@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
+import { Github, ArrowUpRight } from "lucide-react";
 
 const projects = [
   {
@@ -79,10 +79,21 @@ const Projects = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: 0.1 * i }}
-              className="glass-card p-6 hover-lift group flex flex-col"
+              whileHover={{ 
+                y: -8, 
+                scale: 1.02,
+                transition: { duration: 0.25 } 
+              }}
+              className="glass-card p-6 group flex flex-col cursor-default relative overflow-hidden"
             >
-              <div className="flex items-start justify-between mb-3">
-                <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+              {/* Hover glow effect */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,hsl(172,66%,50%,0.1),transparent_60%)]" />
+              
+              {/* Hover border glow */}
+              <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border border-primary/20" />
+
+              <div className="flex items-start justify-between mb-3 relative z-10">
+                <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
                   {project.title}
                 </h3>
                 <a
@@ -95,22 +106,22 @@ const Projects = () => {
                 </a>
               </div>
 
-              <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1 relative z-10">
                 {project.description}
               </p>
 
-              <div className="flex flex-wrap gap-1.5 mb-4">
+              <div className="flex flex-wrap gap-1.5 mb-4 relative z-10">
                 {project.tech.map((t) => (
                   <span
                     key={t}
-                    className="text-[11px] px-2 py-1 rounded-md bg-primary/10 text-primary font-mono"
+                    className="text-[11px] px-2 py-1 rounded-md bg-primary/10 text-primary font-mono transition-colors duration-200 group-hover:bg-primary/20"
                   >
                     {t}
                   </span>
                 ))}
               </div>
 
-              <div className="flex flex-wrap gap-x-4 gap-y-1">
+              <div className="flex flex-wrap gap-x-4 gap-y-1 relative z-10">
                 {project.highlights.map((h) => (
                   <span key={h} className="text-xs text-muted-foreground flex items-center gap-1">
                     <ArrowUpRight size={12} className="text-primary" />
