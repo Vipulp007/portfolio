@@ -49,7 +49,9 @@
     --glass-bg: 220 13% 10% / 0.6;
     --glass-border: 220 13% 20% / 0.3;
     --gradient-primary: linear-gradient(135deg, hsl(172, 66%, 50%), hsl(200, 80%, 55%));
-    --gradient-hero: radial-gradient(ellipse at 50% 0%, hsl(172, 66%, 50%, 0.12) 0%, transparent 60%);
+    /* --gradient-hero: radial-gradient(ellipse at 50% 0%, hsl(172, 66%, 50%, 0.12) 0%, #090a0c 60%); */
+    /* --gradient-hero: radial-gradient(ellipse at 50% 0%, hsla(172, 66%, 50%, 0.082) 0%, #090a0c 100%); */
+    --gradient-hero: linear-gradient(180deg, hsla(172, 66%, 50%, 0.072) 0%, #090a0c 97%);
     --shadow-glow: 0 0 40px hsl(172, 66%, 50%, 0.15);
   }
 }

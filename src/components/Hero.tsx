@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
-import profileImg from "@/assets/profile.jpeg";
 import HaloBackground from "./HaloBackground";
 
 const Hero = () => {
@@ -11,7 +10,7 @@ const Hero = () => {
 
       {/* Gradient glow overlay */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0"
         style={{ background: "var(--gradient-hero)", zIndex: 1 }}
       />
 
@@ -104,7 +103,7 @@ const Hero = () => {
           <div className="relative">
             <div className="w-56 h-56 md:w-72 md:h-72 rounded-full overflow-hidden border-2 border-primary/30 glow-border">
               <img
-                src={profileImg}
+                src="/profile.jpeg"
                 alt="Vipul Patel"
                 className="w-full h-full object-cover object-top"
               />

@@ -1,130 +1,115 @@
 import { useEffect, useRef } from "react";
 
-interface Point {
+interface Particle {
   x: number;
   y: number;
-  vx: number;
-  vy: number;
-  radius: number;
+  baseX: number;
+  baseY: number;
+  size: number;
+  depth: number;
+  color: string;
 }
+
+const colors = [
+  "rgba(0,255,200,0.7)",   // bright teal
+  "rgba(0,200,255,0.6)",   // cyan
+  "rgba(0,170,200,0.5)",   // soft teal
+  "rgba(0,120,160,0.45)",  // muted teal
+  "rgba(120,255,255,0.5)"  // highlight
+];
 
 const HaloBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>(0);
+  const mouse = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const canvas = canvasRef.current!;
+    const ctx = canvas.getContext("2d")!;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
 
-    let width = canvas.width = canvas.offsetWidth;
-    let height = canvas.height = canvas.offsetHeight;
+    resize();
+    window.addEventListener("resize", resize);
 
-    const points: Point[] = [];
-    const numPoints = 20;
-    const maxDist = 200;
+    const particles: Particle[] = [];
 
-    for (let i = 0; i < numPoints; i++) {
-      points.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: (Math.random() - 0.5) * 0.6,
-        radius: Math.random() * 100 + 60,
-      });
+    const gap = 70;
+
+    for (let x = 0; x < canvas.width; x += gap) {
+      for (let y = 0; y < canvas.height; y += gap) {
+
+        const wave = Math.sin(x * 0.02) * 20;
+
+        particles.push({
+          x: x + (Math.random() - 0.5) * 20,
+          y: y + wave + (Math.random() - 0.5) * 20,
+          baseX: x,
+          baseY: y + wave,
+          size: Math.pow(Math.random(), 2) * 18 + 4,
+          depth: Math.random() * 0.8 + 0.2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+        });
+      }
     }
 
-    const mouse = { x: width / 2, y: height / 2 };
-
-    const handleMouseMove = (e: MouseEvent) => {
+    window.addEventListener("mousemove", (e) => {
       const rect = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
-    };
-    canvas.addEventListener("mousemove", handleMouseMove);
-
-    const handleResize = () => {
-      width = canvas.width = canvas.offsetWidth;
-      height = canvas.height = canvas.offsetHeight;
-    };
-    window.addEventListener("resize", handleResize);
+      mouse.current.x = e.clientX - rect.left;
+      mouse.current.y = e.clientY - rect.top;
+    });
 
     const animate = () => {
-      ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Update points
-      for (const p of points) {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > width) p.vx *= -1;
-        if (p.y < 0 || p.y > height) p.vy *= -1;
-      }
+      particles.forEach((p) => {
 
-      // Draw halo glows
-      for (const p of points) {
-        const dx = mouse.x - p.x;
-        const dy = mouse.y - p.y;
+        const dx = mouse.current.x - p.x;
+        const dy = mouse.current.y - p.y;
+
         const dist = Math.sqrt(dx * dx + dy * dy);
-        const influence = Math.max(0, 1 - dist / 500);
 
-        const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * (1 + influence * 0.5));
-        gradient.addColorStop(0, `hsla(172, 66%, 50%, ${0.08 + influence * 0.12})`);
-        gradient.addColorStop(0.4, `hsla(200, 80%, 55%, ${0.04 + influence * 0.06})`);
-        gradient.addColorStop(1, "transparent");
+        const maxDist = 160;
 
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius * (1 + influence * 0.5), 0, Math.PI * 2);
-        ctx.fill();
-      }
+        if (dist < maxDist) {
+          const force = (maxDist - dist) / maxDist;
 
-      // Draw connections
-      for (let i = 0; i < points.length; i++) {
-        for (let j = i + 1; j < points.length; j++) {
-          const dx = points[i].x - points[j].x;
-          const dy = points[i].y - points[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < maxDist) {
-            const alpha = (1 - dist / maxDist) * 0.15;
-            ctx.strokeStyle = `hsla(172, 66%, 50%, ${alpha})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(points[i].x, points[i].y);
-            ctx.lineTo(points[j].x, points[j].y);
-            ctx.stroke();
-          }
+          const angle = Math.atan2(dy, dx);
+
+          p.x -= Math.cos(angle) * force * 12 * p.depth;
+          p.y -= Math.sin(angle) * force * 12 * p.depth;
+
+        } else {
+
+          p.x += (p.baseX - p.x) * 0.05;
+          p.y += (p.baseY - p.y) * 0.05;
+
         }
-      }
 
-      // Mouse halo
-      const mouseGrad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 200);
-      mouseGrad.addColorStop(0, "hsla(172, 66%, 50%, 0.1)");
-      mouseGrad.addColorStop(0.5, "hsla(200, 80%, 55%, 0.04)");
-      mouseGrad.addColorStop(1, "transparent");
-      ctx.fillStyle = mouseGrad;
-      ctx.beginPath();
-      ctx.arc(mouse.x, mouse.y, 200, 0, Math.PI * 2);
-      ctx.fill();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * p.depth, 0, Math.PI * 2);
+        ctx.globalAlpha = 0.65;
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      });
 
-      animationRef.current = requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
-      cancelAnimationFrame(animationRef.current);
-      canvas.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", resize);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-auto"
-      style={{ zIndex: 0 }}
+      className="absolute inset-0 w-full h-full pointer-events-none"
     />
   );
 };
