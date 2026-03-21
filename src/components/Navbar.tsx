@@ -79,7 +79,7 @@ const Navbar = () => {
             </a>
           ))}
           <a
-            href="/VipulPatel_Resume.pdf"
+            href="./Patel_VipulKumar_2026.pdf"
             target="_blank"
             className="text-sm font-medium px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
           >
