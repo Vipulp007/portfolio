@@ -13,7 +13,6 @@ const Hero = () => {
         className="absolute inset-0"
         style={{ background: "var(--gradient-hero)", zIndex: 1 }}
       />
-
       <div className="section-container flex flex-col-reverse md:flex-row items-center gap-12 md:gap-16 pt-20 relative z-10">
         {/* Text */}
         <div className="flex-1 text-center md:text-left">
@@ -23,6 +22,7 @@ const Hero = () => {
             transition={{ delay: 0.1 }}
             className="font-mono text-primary text-sm mb-4"
           >
+      {import.meta.env.BASE_URL}
             Hi, I'm
           </motion.p>
 
