@@ -1,61 +1,17 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Github, ArrowUpRight } from "lucide-react";
-
-const projects = [
-  {
-    title: "JobScout AI",
-    description:
-      "AI-powered job discovery platform with automated job searches, reducing manual job hunting effort by 60%. Features AI agent workflows for crawling and analyzing job postings with 90% extraction accuracy.",
-    tech: ["React", "Node.js", "LangGraph", "AI Agents"],
-    highlights: ["60% less manual effort", "90% extraction accuracy", "Resume matching engine"],
-    github: "https://github.com/Vipulp007",
-  },
-  {
-    title: "AI Meta Content Generator",
-    description:
-      "Shopify app using React, GraphQL, and Shopify Polaris for AI-powered meta title and description generation, reducing SEO content creation time by 50%.",
-    tech: ["React", "GraphQL", "Shopify Polaris", "AI"],
-    highlights: ["50% faster SEO content", "Interactive product grid", "30% faster navigation"],
-    github: "https://github.com/Vipulp007",
-  },
-  {
-    title: "Job Management System",
-    description:
-      "Full stack MERN job tracking system with secure RESTful APIs, authentication, and data visualization for application analytics.",
-    tech: ["MongoDB", "Express.js", "React", "Node.js"],
-    highlights: ["40% better tracking", "Data visualization", "Secure auth"],
-    github: "https://github.com/Vipulp007",
-  },
-  {
-    title: "Multi-Location Delivery System",
-    description:
-      "Custom multi-address Shopify checkout flow enabling customers to ship to multiple locations in a single journey with real-time GraphQL discount handling.",
-    tech: ["PHP", "GraphQL", "Liquid", "JavaScript"],
-    highlights: ["40% more flexible checkout", "35% fewer errors", "30% better fulfillment"],
-    github: "https://github.com/Vipulp007",
-  },
-  {
-    title: "Custom Quotation Management",
-    description:
-      "Private Shopify app for product quote requests with automated approval engine issuing cash/voucher rewards, boosting conversions by 20%.",
-    tech: ["React", "PHP", "GraphQL", "Shopify"],
-    highlights: ["40% faster quotes", "35% less processing", "20% more conversions"],
-    github: "https://github.com/Vipulp007",
-  },
-  {
-    title: "Automation Testing Suite",
-    description:
-      "Scalable Playwright framework for validating critical eCommerce flows including Stripe and Razorpay checkout, with detailed PDF reports and GitHub CI integration.",
-    tech: ["TypeScript", "Playwright", "Node.js", "GitHub Actions"],
-    highlights: ["50% more coverage", "30% fewer defects", "60% less manual testing"],
-    github: "https://github.com/Vipulp007",
-  },
-];
+import projects from "@/projects/Data";
 
 const Projects = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  const toggleReadMore = (index: number) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
+  };
 
   return (
     <section id="projects" className="relative" ref={ref}>
@@ -72,7 +28,7 @@ const Projects = () => {
           <p className="section-subtitle">A selection of projects I'm proud of</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6 items-start">
           {projects.map((project, i) => (
             <motion.div
               key={project.title}
@@ -96,19 +52,20 @@ const Projects = () => {
                 <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
                   {project.title}
                 </h3>
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors flex-shrink-0 ml-2"
-                >
-                  <Github size={18} />
-                </a>
               </div>
 
-              <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1 relative z-10">
+              {/* <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1 relative z-10">
                 {project.description}
-              </p>
+              </p> */}
+
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3 flex-1 relative z-10" dangerouslySetInnerHTML={{ __html: expandedIndex === i ? project.description : `${project.description.substring(0, 180)}...` }} />
+
+                <button
+                  onClick={() => toggleReadMore(i)}
+                  className="text-primary text-xs font-mono hover:underline mb-4 w-fit"
+                >
+                  {expandedIndex === i ? "Read Less ↑" : "Read More →"}
+                </button>
 
               <div className="flex flex-wrap gap-1.5 mb-4 relative z-10">
                 {project.tech.map((t) => (
