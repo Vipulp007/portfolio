@@ -103,7 +103,7 @@ const Hero = () => {
           <div className="relative">
             <div className="w-56 h-56 md:w-72 md:h-72 rounded-full overflow-hidden border-2 border-primary/30 glow-border">
               <img
-                src="/profile.jpeg"
+                src={`${import.meta.env.BASE_URL}profile.jpeg`}
                 alt="Vipul Patel"
                 className="w-full h-full object-cover object-top"
               />
