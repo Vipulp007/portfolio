@@ -1,17 +1,23 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { Github, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import projects from "@/projects/Data";
+
+type Project = {
+    title: string;
+    description: string;
+    tech: string[];
+    highlights: string[];
+};
 
 const Projects = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const toggleReadMore = (index: number) => {
-    setExpandedIndex(expandedIndex === index ? null : index);
-  };
+  const openModal = (project: Project) => setSelectedProject(project);
+  const closeModal = () => setSelectedProject(null);
 
   return (
     <section id="projects" className="relative" ref={ref}>
@@ -40,7 +46,7 @@ const Projects = () => {
                 scale: 1.02,
                 transition: { duration: 0.25 } 
               }}
-              className="glass-card p-6 group flex flex-col cursor-default relative overflow-hidden"
+              className="glass-card p-6 group flex flex-col cursor-default relative overflow-hidden h-full"
             >
               {/* Hover glow effect */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,hsl(172,66%,50%,0.1),transparent_60%)]" />
@@ -54,17 +60,13 @@ const Projects = () => {
                 </h3>
               </div>
 
-              {/* <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1 relative z-10">
-                {project.description}
-              </p> */}
-
-                <p className="text-sm text-muted-foreground leading-relaxed mb-3 flex-1 relative z-10" dangerouslySetInnerHTML={{ __html: expandedIndex === i ? project.description : `${project.description.substring(0, 180)}...` }} />
-
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3 flex-1 relative z-10 line-clamp-3" 
+                dangerouslySetInnerHTML={{ __html: `${project.description}...` }} />
                 <button
-                  onClick={() => toggleReadMore(i)}
+                  onClick={() => openModal(project)}
                   className="text-primary text-xs font-mono hover:underline mb-4 w-fit"
                 >
-                  {expandedIndex === i ? "Read Less ↑" : "Read More →"}
+                  View Details →
                 </button>
 
               <div className="flex flex-wrap gap-1.5 mb-4 relative z-10">
@@ -89,6 +91,73 @@ const Projects = () => {
             </motion.div>
           ))}
         </div>
+        <AnimatePresence>
+            {selectedProject && (
+              <>
+                <motion.div
+                  className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={closeModal}
+                />
+
+                <motion.div
+                  className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  <div
+                    className="glass-card w-full max-w-2xl max-h-[85vh] overflow-y-auto p-6 relative"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      onClick={closeModal}
+                      className="absolute top-4 right-4 text-muted-foreground hover:text-primary"
+                    >
+                      ✕
+                    </button>
+
+                    <h2 className="text-xl font-semibold text-foreground mb-4">
+                      {selectedProject.title}
+                    </h2>
+
+                    <div
+                      className="text-sm text-muted-foreground leading-relaxed space-y-3 
+                      [&_ul]:list-disc [&_ul]:pl-5 [&_strong]:text-primary"
+                      dangerouslySetInnerHTML={{
+                        __html: selectedProject.description,
+                      }}
+                    />
+
+                    <div className="flex flex-wrap gap-2 mt-6">
+                      {selectedProject.tech.map((t) => (
+                        <span
+                          key={t}
+                          className="text-xs px-2 py-1 rounded-md bg-primary/10 text-primary font-mono"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-wrap gap-x-4 gap-y-2 mt-4">
+                      {selectedProject.highlights.map((h) => (
+                        <span
+                          key={h}
+                          className="text-xs text-muted-foreground flex items-center gap-1"
+                        >
+                          ↗ {h}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
       </div>
     </section>
   );
