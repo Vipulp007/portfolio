@@ -4,7 +4,7 @@ import NotFound from "./pages/NotFound.tsx";
 
 
 const App = () => (
-      <BrowserRouter>
+      <BrowserRouter basename="/portfolio">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="*" element={<NotFound />} />
