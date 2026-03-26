@@ -85,9 +85,9 @@ A system designed to provide intelligent financial insights and tracking.
 
 ## 📫 Contact Me
 
-- 📧 Email: your-email@example.com  
-- 💼 LinkedIn: https://linkedin.com/in/your-profile  
-- 🐙 GitHub: https://github.com/your-username  
+- 📧 Email: vipulp25703@gmail.com
+- 💼 LinkedIn: https://www.linkedin.com/in/vipul25703
+- 🐙 GitHub: https://github.com/Vipulp007
 
 ---
 
