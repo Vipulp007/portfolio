@@ -22,7 +22,6 @@ const Hero = () => {
             transition={{ delay: 0.1 }}
             className="font-mono text-primary text-sm mb-4"
           >
-      {import.meta.env.BASE_URL}
             Hi, I'm
           </motion.p>
 
