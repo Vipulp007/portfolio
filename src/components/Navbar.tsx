@@ -120,6 +120,13 @@ const Navbar = () => {
                   {link.label}
                 </a>
               ))}
+              <a
+                href="./Patel_VipulKumar_2026.pdf"
+                target="_blank"
+                className="text-sm font-medium px-4 py-2 text-center rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+              >
+                Resume
+              </a>
             </div>
           </motion.div>
         )}
