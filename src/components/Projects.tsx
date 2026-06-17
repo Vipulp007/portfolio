@@ -49,7 +49,7 @@ const Projects = () => {
               className="glass-card p-6 group flex flex-col cursor-default relative overflow-hidden h-full"
             >
               {/* Hover glow effect */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,hsl(172,66%,50%,0.1),transparent_60%)]" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,hsl(217,90%,60%,0.1),transparent_60%)]" />
               
               {/* Hover border glow */}
               <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border border-primary/20" />

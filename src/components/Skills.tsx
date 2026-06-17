@@ -54,7 +54,7 @@ const Skills = () => {
               className="glass-card p-6 group cursor-default relative overflow-hidden"
             >
               {/* Hover glow effect */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,hsl(172,66%,50%,0.08),transparent_70%)]" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,hsl(217,90%,60%,0.08),transparent_70%)]" />
               
               {/* Hover border glow */}
               <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border border-primary/20" />
