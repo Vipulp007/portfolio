@@ -62,13 +62,13 @@ const Hero = () => {
           >
             <a
               href="#projects"
-              className="px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
+              className="px-7 py-3.5 rounded-2xl bg-primary text-primary-foreground font-medium clay-sm hover:-translate-y-0.5 transition-transform"
             >
               View Projects
             </a>
             <a
               href="#contact"
-              className="px-6 py-3 rounded-lg border border-border text-foreground hover:bg-secondary transition-colors"
+              className="px-7 py-3.5 rounded-2xl bg-card text-foreground font-medium clay-sm hover:-translate-y-0.5 transition-transform"
             >
               Contact Me
             </a>
@@ -100,12 +100,14 @@ const Hero = () => {
           className="flex-shrink-0"
         >
           <div className="relative">
-            <div className="w-56 h-56 md:w-72 md:h-72 rounded-full overflow-hidden border-2 border-primary/30 glow-border">
+            <div className="w-56 h-56 md:w-72 md:h-72 rounded-full overflow-hidden glass-card p-2">
+              <div className="w-full h-full rounded-full overflow-hidden">
               <img
                 src={`${import.meta.env.BASE_URL}profile.jpeg`}
                 alt="Vipul Patel"
                 className="w-full h-full object-cover object-top"
               />
+              </div>
             </div>
             <div className="absolute -inset-3 rounded-full border border-primary/10 animate-glow-pulse" />
           </div>
