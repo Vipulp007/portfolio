@@ -11,11 +11,11 @@ interface Particle {
 }
 
 const colors = [
-  "rgba(180,150,255,0.55)", // lavender
-  "rgba(255,170,210,0.5)",  // pink
-  "rgba(150,210,255,0.5)",  // sky
-  "rgba(190,255,220,0.45)", // mint
-  "rgba(255,210,160,0.45)"  // peach
+  "rgba(140,180,255,0.55)", // light blue
+  "rgba(100,160,255,0.5)",  // medium blue
+  "rgba(80,200,255,0.5)",   // sky blue
+  "rgba(120,140,255,0.45)", // periwinkle
+  "rgba(60,180,220,0.45)"   // cyan blue
 ];
 
 const HaloBackground = () => {
